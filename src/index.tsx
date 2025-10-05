@@ -37,9 +37,34 @@ app.get('/', async (c) => {
     <>
       {items?.map((entry) => {
         return (
-          <article>
-            <h2>{entry.title}</h2>
-          </article>
+          <details>
+            <summary
+              role="button"
+              class="outline contrast"
+            >
+              {entry.title}
+            </summary>
+            <article>
+              <header>
+                <a
+                  href={entry.link}
+                  target="_blank"
+                  rel="nofollow noopener"
+                >
+                  Article
+                </a>
+                {' | '}
+                <a
+                  href={entry.comments}
+                  target="_blank"
+                  rel="nofollow noopener"
+                >
+                  Comments
+                </a>
+              </header>
+              Summary coming soon...
+            </article>
+          </details>
         );
       })}
     </>
