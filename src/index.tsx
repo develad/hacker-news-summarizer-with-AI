@@ -33,7 +33,15 @@ app.get('/', async (c) => {
   // throw new Error('oh no!');
   // return c.html(<h1>Hello world</h1>);
   // return c.render(<h1>Hello world</h1>);
-  const items = await getFeed();
+
+  // const items = await getFeed();
+  const items = [
+    {
+      title: "What GPT-oss Leaks About OpenAI's Training Data",
+      link: 'https://fi-le.net/oss/',
+      comments: '',
+    },
+  ];
 
   // return c.render(<>{JSON.stringify(items, null, 2)}</>);
   return c.render(
@@ -41,6 +49,7 @@ app.get('/', async (c) => {
       {await Promise.all(
         items?.map(async (entry) => {
           const result = await getArticleAndSummary({
+            ai: c.env.AI,
             articlesKV: c.env.articles,
             url: entry.link!,
           });

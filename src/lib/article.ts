@@ -4,18 +4,19 @@ import { ArticleSummary } from '../types';
 import DOMPurify from 'dompurify';
 
 export async function getArticleAndSummary(options: {
+  ai: Ai;
   articlesKV: KVNamespace;
   url: string;
 }) {
-  //   let result: ArticleSummary | null = null;
-  let result = await options.articlesKV.get<ArticleSummary>(
-    options.url,
-    'json'
-  );
+  let result: ArticleSummary | null = null;
+  //   let result = await options.articlesKV.get<ArticleSummary>(
+  //     options.url,
+  //     'json'
+  //   );
 
-  if (result) {
-    return result;
-  }
+  //   if (result) {
+  //     return result;
+  //   }
 
   const response = await fetch(options.url, {
     // @ts-ignore
@@ -51,9 +52,14 @@ export async function getArticleAndSummary(options: {
     const cleanArticle = purify.sanitize(article.content);
     const cleanExcerpt = purify.sanitize(article.excerpt!);
 
+    const response = await options.ai.run('@cf/facebook/bart-large-cnn', {
+      input_text: cleanArticle,
+      max_length: 2000,
+    });
+
     result = {
       article: cleanArticle,
-      summary: cleanExcerpt,
+      summary: response.summary,
     };
   }
 
