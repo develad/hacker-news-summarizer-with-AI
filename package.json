@@ -8,7 +8,9 @@
   },
   "dependencies": {
     "@extractus/feed-extractor": "^7.1.7",
-    "hono": "^4.9.10"
+    "@mozilla/readability": "^0.6.0",
+    "hono": "^4.9.10",
+    "linkedom": "^0.18.12"
   },
   "devDependencies": {
     "wrangler": "^4.4.0"

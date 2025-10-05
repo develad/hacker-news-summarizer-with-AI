@@ -1,6 +1,7 @@
 import { Hono } from 'hono';
 import { jsxRenderer } from 'hono/jsx-renderer';
 import { getFeed } from './lib/hacker-news';
+import { getArticleAndSummary } from './lib/article';
 
 const app = new Hono();
 
@@ -35,38 +36,55 @@ app.get('/', async (c) => {
   // return c.render(<>{JSON.stringify(items, null, 2)}</>);
   return c.render(
     <>
-      {items?.map((entry) => {
-        return (
-          <details>
-            <summary
-              role="button"
-              class="outline contrast"
-            >
-              {entry.title}
-            </summary>
-            <article>
-              <header>
-                <a
-                  href={entry.link}
-                  target="_blank"
-                  rel="nofollow noopener"
-                >
-                  Article
-                </a>
-                {' | '}
-                <a
-                  href={entry.comments}
-                  target="_blank"
-                  rel="nofollow noopener"
-                >
-                  Comments
-                </a>
-              </header>
-              Summary coming soon...
-            </article>
-          </details>
-        );
-      })}
+      {await Promise.all(
+        items?.map(async (entry) => {
+          const result = await getArticleAndSummary(entry.link!);
+          return (
+            <details>
+              <summary
+                role="button"
+                class="outline contrast"
+              >
+                {entry.title}
+              </summary>
+              <article>
+                <header>
+                  <a
+                    href={entry.link}
+                    target="_blank"
+                    rel="nofollow noopener"
+                  >
+                    Article
+                  </a>
+                  {' | '}
+                  <a
+                    href={entry.comments}
+                    target="_blank"
+                    rel="nofollow noopener"
+                  >
+                    Comments
+                  </a>
+                </header>
+                {result.article ? (
+                  <div>
+                    <h2>Summary</h2>
+                    {result.summary ? (
+                      result.summary
+                    ) : (
+                      <p>Summary unavailable</p>
+                    )}
+                    <hr />
+                    <h2>Article</h2>
+                    {result.article}
+                  </div>
+                ) : (
+                  <h2>Unable to retrieve article.</h2>
+                )}
+              </article>
+            </details>
+          );
+        })
+      )}
     </>
   );
 });
