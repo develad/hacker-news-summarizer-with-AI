@@ -39,7 +39,10 @@ app.get('/', async (c) => {
     <>
       {await Promise.all(
         items?.map(async (entry) => {
-          const result = await getArticleAndSummary(entry.link!);
+          const result = await getArticleAndSummary({
+            articlesKV: c.env.articles,
+            url: entry.link!,
+          });
           return (
             <details>
               <summary

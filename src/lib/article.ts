@@ -1,8 +1,21 @@
 import { Readability } from '@mozilla/readability';
 import { parseHTML } from 'linkedom';
+import { ArticleSummary } from '../types';
 
-export async function getArticleAndSummary(url: string) {
-  const response = await fetch(url, {
+export async function getArticleAndSummary(options: {
+  articlesKV: KVNamespace;
+  url: string;
+}) {
+  let result = await options.articlesKV.get<ArticleSummary>(
+    options.url,
+    'json'
+  );
+
+  if (result) {
+    return result;
+  }
+
+  const response = await fetch(options.url, {
     // @ts-ignore
     cf: {
       cacheEverything: true,
@@ -16,15 +29,19 @@ export async function getArticleAndSummary(url: string) {
   let reader = new Readability(document);
   let article = reader.parse();
 
-  if (!article?.content) {
-    return {
-      article: null,
-      summary: null,
+  result = {
+    article: null,
+    summary: null,
+  };
+
+  if (article?.content) {
+    result = {
+      article: article.content,
+      summary: article.excerpt,
     };
   }
 
-  return {
-    article: article?.content,
-    summary: article?.excerpt,
-  };
+  await options.articlesKV.put(options.url, JSON.stringify(result));
+
+  return result;
 }
