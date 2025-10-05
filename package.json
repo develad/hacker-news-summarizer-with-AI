@@ -9,6 +9,7 @@
   "dependencies": {
     "@extractus/feed-extractor": "^7.1.7",
     "@mozilla/readability": "^0.6.0",
+    "dompurify": "^3.2.7",
     "hono": "^4.9.10",
     "linkedom": "^0.18.12"
   },

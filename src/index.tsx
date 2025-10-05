@@ -3,6 +3,7 @@ import { jsxRenderer } from 'hono/jsx-renderer';
 import { getFeed } from './lib/hacker-news';
 import { getArticleAndSummary } from './lib/article';
 import { AppEnv } from './types';
+import { raw } from 'hono/html';
 
 const app = new Hono<AppEnv>();
 
@@ -73,13 +74,13 @@ app.get('/', async (c) => {
                   <div>
                     <h2>Summary</h2>
                     {result.summary ? (
-                      result.summary
+                      raw(result.summary)
                     ) : (
                       <p>Summary unavailable</p>
                     )}
                     <hr />
                     <h2>Article</h2>
-                    {result.article}
+                    {raw(result.article)}
                   </div>
                 ) : (
                   <h2>Unable to retrieve article.</h2>
