@@ -4,6 +4,7 @@ import { getFeed } from './lib/hacker-news';
 import { getArticleAndSummary } from './lib/article';
 import { AppEnv } from './types';
 import { raw } from 'hono/html';
+import { css, Style } from 'hono/css';
 
 const app = new Hono<AppEnv>();
 
@@ -17,6 +18,15 @@ app.use(
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
           ></link>
+          <Style>
+            {css`
+            @import url('https://fonts.googleapis.com/css2?family=Syne+Mono&display=swap');
+
+            :root{
+              --pico-font-family: "Syne Mono", monospace;
+              
+\            }`}
+          </Style>
         </head>
         <body
           class="container"
