@@ -28,12 +28,7 @@ app.use(
 \            }`}
           </Style>
         </head>
-        <body
-          class="container"
-          style={{ padding: '4rem' }}
-        >
-          {children}
-        </body>
+        <body class="container">{children}</body>
       </html>
     );
   })
@@ -56,7 +51,9 @@ app.get('/', async (c) => {
   // return c.render(<>{JSON.stringify(items, null, 2)}</>);
   return c.render(
     <>
-      <h1 style={{ marginBottom: '2rem' }}>Hacker News Summary</h1>
+      <h1 style={{ margin: '2rem 0', textAlign: 'center' }}>
+        Hacker News Summary
+      </h1>
       {await Promise.all(
         items?.map(async (entry) => {
           const result = await getArticleAndSummary({
