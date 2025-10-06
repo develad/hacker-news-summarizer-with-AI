@@ -34,18 +34,19 @@ app.get('/', async (c) => {
   // return c.html(<h1>Hello world</h1>);
   // return c.render(<h1>Hello world</h1>);
 
-  // const items = await getFeed();
-  const items = [
-    {
-      title: "What GPT-oss Leaks About OpenAI's Training Data",
-      link: 'https://fi-le.net/oss/',
-      comments: '',
-    },
-  ];
+  const items = await getFeed();
+  // const items = [
+  //   {
+  //     title: "What GPT-oss Leaks About OpenAI's Training Data",
+  //     link: 'https://fi-le.net/oss/',
+  //     comments: '',
+  //   },
+  // ];
 
   // return c.render(<>{JSON.stringify(items, null, 2)}</>);
   return c.render(
     <>
+      <h1 style={{ marginBottom: '2rem' }}>Hacker News Summary</h1>
       {await Promise.all(
         items?.map(async (entry) => {
           const result = await getArticleAndSummary({
@@ -81,7 +82,7 @@ app.get('/', async (c) => {
                 </header>
                 {result.article ? (
                   <div>
-                    <h2>Summary</h2>
+                    <h2>✨ AI Summary</h2>
                     {result.summary ? (
                       raw(result.summary)
                     ) : (

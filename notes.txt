@@ -2,3 +2,5 @@ https://developers.cloudflare.com/workers-ai/models/
 https://hono.dev/docs/middleware/builtin/jsx-renderer
 https://news.ycombinator.com/rss
 https://developers.cloudflare.com/kv/
+https://developers.cloudflare.com/workers-ai/features/fine-tunes/loras/
+https://developers.cloudflare.com/workers-ai/features/fine-tunes/public-loras/
