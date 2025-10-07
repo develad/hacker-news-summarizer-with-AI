@@ -5,6 +5,7 @@ import { getArticleAndSummary } from './lib/article';
 import { AppEnv } from './types';
 import { raw } from 'hono/html';
 import { css, Style } from 'hono/css';
+import { dateFormat } from './lib/utils';
 
 const app = new Hono<AppEnv>();
 
@@ -62,28 +63,13 @@ app.get('/', async (c) => {
             url: entry.link!,
           });
 
-          const optionsDate = {
-            year: 'numeric' as const,
-            month: 'numeric' as const,
-            day: 'numeric' as const,
-            hour: 'numeric' as const,
-            minute: 'numeric' as const,
-            second: 'numeric' as const,
-            hour12: false,
-            timeZone: 'Asia/Jerusalem',
-          };
-
-          // "12/19/2012, 19:00:00"
-
           return (
             <details>
               <summary
                 role="button"
                 class="outline contrast"
               >
-                {new Intl.DateTimeFormat('he-IL', optionsDate).format(
-                  new Date(entry.published!)
-                )}
+                {dateFormat(entry.published!)}
                 {' | '}
                 {entry.title}
               </summary>
